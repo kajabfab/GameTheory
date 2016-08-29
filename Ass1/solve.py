@@ -5,8 +5,10 @@ if len(argv) == 2:
 else:
     FN = str(raw_input("Enter Input File: "))
 
+
 def validate(file):
     pass
+
 
 F = open(FN, 'r')
 headers = F.readline().strip()
