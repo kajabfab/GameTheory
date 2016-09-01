@@ -4,17 +4,17 @@ WDSE_FL = 0  # weakly dominant strategy equilibrium
 
 def FBRS(player, strategy_profiles):  # Find best response strategy
     global WDSE_FL
-    best_response = []
-
     MS = 0
+    best_response = [ MS ]
+
     for s in range(0, len(strategy_profiles)):
         if strategy_profiles[s][player] > strategy_profiles[MS][player]:
             MS = s
             best_response = [MS]
-        elif strategy_profiles[s][player] == strategy_profiles[MS][player]:
+        elif strategy_profiles[s][player] == strategy_profiles[MS][player] and s != MS:
             WDSE_FL = 1
             best_response.append(s)
-    # print player+1, best_response, strategy_profiles
+    # print player+1, best_response, strategy_profiles, s, MS
     return best_response
 
 
@@ -116,7 +116,7 @@ else:
         #     for j in range(0, NSP/NPS):
         #         player_strategy.append(strategy_profiles[j:j+(INC*NPS):INC])
                 
-        print i+1, INC, player_strategy
+        # print i+1, INC, player_strategy
 
         BSP = FBS(i, player_strategy)  # best strategy for player
         if not BSP:
