@@ -2,17 +2,19 @@ from sys import argv
 
 WDSE_FL = 0  # weakly dominant strategy equilibrium
 
-
 def FBRS(player, strategy_profiles):  # Find best response strategy
-    best_response = []
-
+    global WDSE_FL
     MS = 0
+    best_response = [ MS ]
+
     for s in range(0, len(strategy_profiles)):
-        if strategy_profiles[s] > strategy_profiles[MS]:
+        if strategy_profiles[s][player] > strategy_profiles[MS][player]:
             MS = s
             best_response = [MS]
-        elif strategy_profiles[s] == strategy_profiles[MS]:
+        elif strategy_profiles[s][player] == strategy_profiles[MS][player] and s != MS:
+            WDSE_FL = 1
             best_response.append(s)
+    # print player+1, best_response, strategy_profiles, s, MS
     return best_response
 
 
@@ -21,19 +23,19 @@ def FCS(br1, br2):  # Find commmon strategies
 
 
 def FBS(player, player_strategy):  # Find best strategy
+    global WDSE_FL
     best_strategy = []
     for sp in range(0, len(player_strategy)):
         if sp == 0:
             best_strategy = FBRS(player, player_strategy[sp])
         else:
-            tmp_best_strategy = FBRS(player, player_strategy)
+            tmp_best_strategy = FBRS(player, player_strategy[sp])
             if len(tmp_best_strategy) > 1:
                 WDSE_FL = 1
             best_strategy = FCS(best_strategy, tmp_best_strategy)
 
         if not best_strategy:
             break
-
     return best_strategy
 
 if len(argv) == 2:
@@ -103,19 +105,25 @@ else:
         for j in range(0, i):
             INC *= strategy[j]
 
-        if i == 0:  # P1
-            for j in range(0, NSP/NPS):
-                player_strategy.append(strategy_profiles[j*NPS:(j+1)*NPS])
-        else:
-            for j in range(0, NSP/NPS):
-                player_strategy.append(strategy_profiles[j:j+(INC*NPS):INC])
+        for j in range(0, NSP/(INC*NPS)):
+            for k in range(0, INC):
+                player_strategy.append(strategy_profiles[(j*INC*NPS)+k:k+((j+1)*INC*NPS):INC])
+
+        # if i == 0:  # P1
+        #     for j in range(0, NSP/NPS):
+        #         player_strategy.append(strategy_profiles[j*NPS:(j+1)*NPS])
+        # else:
+        #     for j in range(0, NSP/NPS):
+        #         player_strategy.append(strategy_profiles[j:j+(INC*NPS):INC])
                 
         # print i+1, INC, player_strategy
 
         BSP = FBS(i, player_strategy)  # best strategy for player
         if not BSP:
-            print "No dominant equilibrium strategy exists"
+            WDSE_FL = -1
             break
+            #print "No dominant equilibrium strategy exists"
+            #raise SystemExit
         else:
             ES.append(BSP[0]+1)
 
@@ -123,3 +131,7 @@ else:
         print "The strongly dominant strategy is", ES
     elif WDSE_FL == 1:
         print "The weakly dominant strategy is", ES
+    elif WDSE_FL == -1:
+        print "No dominant equilibrium strategy exists"
+
+        
