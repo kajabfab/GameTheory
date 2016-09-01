@@ -14,7 +14,7 @@ def FBRS(player, strategy_profiles):  # Find best response strategy
         elif strategy_profiles[s][player] == strategy_profiles[MS][player]:
             WDSE_FL = 1
             best_response.append(s)
-    print player+1, best_response, strategy_profiles
+    # print player+1, best_response, strategy_profiles
     return best_response
 
 
@@ -105,8 +105,9 @@ else:
         for j in range(0, i):
             INC *= strategy[j]
 
-        for j in range(0, NSP):
-            player_strategy.append(strategy_profiles[j:j+(INC*NPS):INC])
+        for j in range(0, NSP/(INC*NPS)):
+            for k in range(0, INC):
+                player_strategy.append(strategy_profiles[(j*INC*NPS)+k:k+((j+1)*INC*NPS):INC])
 
         # if i == 0:  # P1
         #     for j in range(0, NSP/NPS):
