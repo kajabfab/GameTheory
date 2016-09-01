@@ -2,10 +2,11 @@ from sys import argv
 
 WDSE_FL = 0  # weakly dominant strategy equilibrium
 
+
 def FBRS(player, strategy_profiles):  # Find best response strategy
     global WDSE_FL
     MS = 0
-    best_response = [ MS ]
+    best_response = [MS]
 
     for s in range(0, len(strategy_profiles)):
         if strategy_profiles[s][player] > strategy_profiles[MS][player]:
@@ -109,21 +110,12 @@ else:
             for k in range(0, INC):
                 player_strategy.append(strategy_profiles[(j*INC*NPS)+k:k+((j+1)*INC*NPS):INC])
 
-        # if i == 0:  # P1
-        #     for j in range(0, NSP/NPS):
-        #         player_strategy.append(strategy_profiles[j*NPS:(j+1)*NPS])
-        # else:
-        #     for j in range(0, NSP/NPS):
-        #         player_strategy.append(strategy_profiles[j:j+(INC*NPS):INC])
-                
         # print i+1, INC, player_strategy
 
         BSP = FBS(i, player_strategy)  # best strategy for player
         if not BSP:
             WDSE_FL = -1
             break
-            #print "No dominant equilibrium strategy exists"
-            #raise SystemExit
         else:
             ES.append(BSP[0]+1)
 
@@ -133,5 +125,3 @@ else:
         print "The weakly dominant strategy is", ES
     elif WDSE_FL == -1:
         print "No dominant equilibrium strategy exists"
-
-        
