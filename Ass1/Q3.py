@@ -65,7 +65,7 @@ else:
 
     NP = len(player)  # no of players
 
-    print player, NP
+    # print player
 
     strategy_str = info[1].strip('{ }').split()
     strategy = []  # no of strategies of player i
