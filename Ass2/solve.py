@@ -11,7 +11,7 @@ n_str = F.readline()
 NP = int(n_str.strip()) # Number of Players
 
 u_str = F.readline()
-u_strs = u_str.split()
+u_strs = u_str.split(",")
 
 U_in = [] # Utilities of various coalitions (not parsed)
 for x in u_strs:
@@ -114,6 +114,7 @@ FACT = Factorial(NP)
 for i in range(1, NP+1):
     shapley = 0
     #print i
+    shapley += (FACT[0]*FACT[NP-1])*(U[tokey([i])])
     for c in restrict_gen_seq(NP, i):
         t = []
         t.append(i)
